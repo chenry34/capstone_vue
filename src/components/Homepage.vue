@@ -47,7 +47,7 @@ export default {
   name: "homepage",
   data: function() {
       return {
-          door: "Closed"
+          door: ""
       }
   },
   created: function() {
@@ -55,11 +55,13 @@ export default {
   },
   methods: {
       getDoor() {
-          let vm = this
+          setInterval(() => {
+            let vm = this
 
-          return axios.get("http://127.0.0.1:8000/getDoor").then(res => {
-              vm.door = res.data
-          })
+            return axios.get("http://127.0.0.1:8000/getDoor").then(res => {
+                vm.door = res.data
+            })
+          }, 4000)
       }
   }
 };
