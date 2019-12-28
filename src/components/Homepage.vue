@@ -1,37 +1,55 @@
 <template>
-  <div>
+  <div class="homepage">
     <b-row class="mt-4 mr-5 ml-5">
       <b-col sm="4">
-        <b-card title="Door" class="card-style">
+        <b-card
+          title="Door"
+          class="card-style"
+        >
           <b-card-text class="text-style">{{door}}</b-card-text>
         </b-card>
       </b-col>
       <b-col sm="4">
-        <b-card class="card-style" title="Window">
+        <b-card
+          class="card-style"
+          title="Window"
+        >
           <b-card-text class="text-style">Closed</b-card-text>
         </b-card>
       </b-col>
       <b-col sm="4">
-        <b-card class="card-style" title="Humidity">
+        <b-card
+          class="card-style"
+          title="Humidity"
+        >
           <b-card-text class="text-style">10%</b-card-text>
         </b-card>
       </b-col>
     </b-row>
     <b-row class="mt-3 ml-5 mr-5">
       <b-col sm="4">
-        <b-card title="Temperature" class="card-style">
+        <b-card
+          title="Temperature"
+          class="card-style"
+        >
           <b-card-text>
             <b-card-text class="text-style">10 C</b-card-text>
           </b-card-text>
         </b-card>
       </b-col>
       <b-col sm="4">
-        <b-card class="card-style" title="Carbon Monoxide">
+        <b-card
+          class="card-style"
+          title="Carbon Monoxide"
+        >
           <b-card-text class="text-style">0</b-card-text>
         </b-card>
       </b-col>
       <b-col sm="4">
-        <b-card class="card-style" title="Motion">
+        <b-card
+          class="card-style"
+          title="Motion"
+        >
           <b-card-text class="text-style">None</b-card-text>
         </b-card>
       </b-col>
@@ -40,29 +58,47 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-
 export default {
   name: "homepage",
   data: function() {
-      return {
-          door: ""
-      }
+    return {
+      door: ""
+    };
   },
   created: function() {
-      this.getDoor()
+    this.getDoor();
   },
   methods: {
-      getDoor() {
-          setInterval(() => {
-            let vm = this
+    getDoor() {
+      setInterval(() => {
+        let vm = this;
 
-            return axios.get("http://127.0.0.1:8000/getDoor").then(res => {
-                vm.door = res.data
-            })
-          }, 4000)
-      }
+        return this.$axios
+          .get("http://127.0.0.1:8000/getDoor")
+          .then(res => {
+            vm.door = res.data;
+          })
+          .catch(err => {
+            if (err.response.data.code == "token_not_valid") {
+              let payload = {
+                refresh: localStorage.getItem("refresh")
+              }
+              return this.$axios
+                .post("http://127.0.0.1:8000/api/token/refresh/", payload)
+                .then(res => {
+                  localStorage.setItem("token", res.data.access);
+                  this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("token", res.data.access);
+                })
+                .catch(err => {
+                  console.log(err)
+                  this.$router.push("/");
+                });
+            } else {
+              console.log(err)
+            }
+          });
+      }, 4000);
+    }
   }
 };
 </script>
@@ -71,6 +107,11 @@ export default {
 .text-style {
   margin-top: 25%;
   font-size: 150%;
+}
+
+.homepage {
+  max-width: 1400px;
+  margin: auto;
 }
 
 .header-style {
