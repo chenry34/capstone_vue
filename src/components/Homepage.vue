@@ -14,7 +14,7 @@
           class="card-style"
           title="Window"
         >
-          <b-card-text class="text-style">Closed</b-card-text>
+          <b-card-text class="text-style">{{window}}</b-card-text>
         </b-card>
       </b-col>
       <b-col sm="4">
@@ -63,18 +63,21 @@ export default {
   data: function() {
     return {
       door: "",
-      pollingDoor: null
+      window: "",
+      pollingDoor: null,
+      pollingWindow: null
     };
   },
   created: function() {
-
     if (!this.$store.getters.getTokens || !this.$store.getters.getTokens.isAuthenticated()) {
-        this.$router.push("/");
-      }
+      this.$router.push("/");
+    }
     this.getDoor();
+    this.getWindow()
   },
   beforeDestroy() {
     clearInterval(this.pollingDoor);
+    clearInterval(this.pollingWindow);
   },
   methods: {
     getDoor() {
@@ -85,6 +88,20 @@ export default {
           .get("http://127.0.0.1:8000/getDoor")
           .then(res => {
             vm.door = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }, 4000);
+    },
+    getWindow() {
+      this.pollingWindow = setInterval(() => {
+        let vm = this;
+
+        return this.$axios
+          .get("http://127.0.0.1:8000/getWindow")
+          .then(res => {
+            vm.window = res.data;
           })
           .catch(err => {
             console.log(err);
