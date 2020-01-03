@@ -22,7 +22,7 @@
           class="card-style"
           title="Humidity"
         >
-          <b-card-text class="text-style">10%</b-card-text>
+          <b-card-text class="text-style">{{humidity}}%</b-card-text>
         </b-card>
       </b-col>
     </b-row>
@@ -64,8 +64,10 @@ export default {
     return {
       door: "",
       window: "",
+      humidity: "",
       pollingDoor: null,
-      pollingWindow: null
+      pollingWindow: null,
+      pollingHumidity: null
     };
   },
   created: function() {
@@ -73,11 +75,13 @@ export default {
       this.$router.push("/");
     }
     this.getDoor();
-    this.getWindow()
+    this.getWindow();
+    this.getHumidity();
   },
   beforeDestroy() {
     clearInterval(this.pollingDoor);
     clearInterval(this.pollingWindow);
+    clearInterval(this.pollingHumidity);
   },
   methods: {
     getDoor() {
@@ -102,6 +106,20 @@ export default {
           .get("http://127.0.0.1:8000/getWindow")
           .then(res => {
             vm.window = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }, 4000);
+    },
+    getHumidity() {
+      this.pollingHumidity = setInterval(() => {
+        let vm = this;
+
+        return this.$axios
+          .get("http://127.0.0.1:8000/getHumidity")
+          .then(res => {
+            vm.humidity = res.data;
           })
           .catch(err => {
             console.log(err);
