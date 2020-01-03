@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import TokenStorage from '../token-storage.js'
 export default {
   name: "login",
   data: function() {
@@ -57,8 +58,9 @@ export default {
       return this.$axios
         .post("http://127.0.0.1:8000/api/token/", payload)
         .then(res => {
-          localStorage.setItem("token", res.data.access);
-          localStorage.setItem("refresh", res.data.refresh);
+          console.log(res.data)
+          var tokenStorage = new TokenStorage(res.data.access, res.data.refresh)
+          this.$store.commit('updateTokens', tokenStorage)
           this.$router.push("home");
         })
         .catch(err => {

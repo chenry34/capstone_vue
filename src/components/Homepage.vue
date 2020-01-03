@@ -62,15 +62,23 @@ export default {
   name: "homepage",
   data: function() {
     return {
-      door: ""
+      door: "",
+      pollingDoor: null
     };
   },
   created: function() {
+
+    if (!this.$store.getters.getTokens || !this.$store.getters.getTokens.isAuthenticated()) {
+        this.$router.push("/");
+      }
     this.getDoor();
+  },
+  beforeDestroy() {
+    clearInterval(this.pollingDoor);
   },
   methods: {
     getDoor() {
-      setInterval(() => {
+      this.pollingDoor = setInterval(() => {
         let vm = this;
 
         return this.$axios
@@ -79,23 +87,7 @@ export default {
             vm.door = res.data;
           })
           .catch(err => {
-            if (err.response.data.code == "token_not_valid") {
-              let payload = {
-                refresh: localStorage.getItem("refresh")
-              }
-              return this.$axios
-                .post("http://127.0.0.1:8000/api/token/refresh/", payload)
-                .then(res => {
-                  localStorage.setItem("token", res.data.access);
-                  this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("token", res.data.access);
-                })
-                .catch(err => {
-                  console.log(err)
-                  this.$router.push("/");
-                });
-            } else {
-              console.log(err)
-            }
+            console.log(err);
           });
       }, 4000);
     }
