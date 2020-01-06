@@ -50,7 +50,7 @@
           class="card-style"
           title="Motion"
         >
-          <b-card-text class="text-style">None</b-card-text>
+          <b-card-text class="text-style">{{motion}}</b-card-text>
         </b-card>
       </b-col>
     </b-row>
@@ -65,9 +65,11 @@ export default {
       door: "",
       window: "",
       humidity: "",
+      motion: "",
       pollingDoor: null,
       pollingWindow: null,
-      pollingHumidity: null
+      pollingHumidity: null,
+      pollingMotion: null
     };
   },
   created: function() {
@@ -77,11 +79,13 @@ export default {
     this.getDoor();
     this.getWindow();
     this.getHumidity();
+    this.getMotion();
   },
   beforeDestroy() {
     clearInterval(this.pollingDoor);
     clearInterval(this.pollingWindow);
     clearInterval(this.pollingHumidity);
+    clearInterval(this.pollingMotion);
   },
   methods: {
     getDoor() {
@@ -89,7 +93,7 @@ export default {
         let vm = this;
 
         return this.$axios
-          .get("http://127.0.0.1:8000/getDoor")
+          .get("http://192.168.0.102:8000/getDoor")
           .then(res => {
             vm.door = res.data;
           })
@@ -103,7 +107,7 @@ export default {
         let vm = this;
 
         return this.$axios
-          .get("http://127.0.0.1:8000/getWindow")
+          .get("http://192.168.0.102:8000/getWindow")
           .then(res => {
             vm.window = res.data;
           })
@@ -117,9 +121,23 @@ export default {
         let vm = this;
 
         return this.$axios
-          .get("http://127.0.0.1:8000/getHumidity")
+          .get("http://192.168.0.102:8000/getHumidity")
           .then(res => {
             vm.humidity = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }, 4000);
+    },
+    getMotion() {
+      this.pollingMotion = setInterval(() => {
+        let vm = this;
+
+        return this.$axios
+          .get("http://192.168.0.102:8000/getMotion")
+          .then(res => {
+            vm.motion = res.data;
           })
           .catch(err => {
             console.log(err);
