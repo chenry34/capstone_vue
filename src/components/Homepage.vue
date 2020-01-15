@@ -42,7 +42,7 @@
           class="card-style"
           title="Carbon Monoxide"
         >
-          <b-card-text class="text-style">0</b-card-text>
+          <b-card-text class="text-style">{{co}}</b-card-text>
         </b-card>
       </b-col>
       <b-col sm="4">
@@ -66,10 +66,13 @@ export default {
       window: "",
       humidity: "",
       motion: "",
+      co: "",
       pollingDoor: null,
       pollingWindow: null,
       pollingHumidity: null,
-      pollingMotion: null
+      pollingMotion: null,
+      pollingCO: null,
+      url: "http://192.168.0.102:8000"
     };
   },
   created: function() {
@@ -80,12 +83,14 @@ export default {
     this.getWindow();
     this.getHumidity();
     this.getMotion();
+    this.getCO();
   },
   beforeDestroy() {
     clearInterval(this.pollingDoor);
     clearInterval(this.pollingWindow);
     clearInterval(this.pollingHumidity);
     clearInterval(this.pollingMotion);
+    clearInterval(this.pollingCO);
   },
   methods: {
     getDoor() {
@@ -93,7 +98,7 @@ export default {
         let vm = this;
 
         return this.$axios
-          .get("http://192.168.0.102:8000/getDoor")
+          .get(this.url + "/getDoor")
           .then(res => {
             vm.door = res.data;
           })
@@ -107,7 +112,7 @@ export default {
         let vm = this;
 
         return this.$axios
-          .get("http://192.168.0.102:8000/getWindow")
+          .get(this.url + "/getWindow")
           .then(res => {
             vm.window = res.data;
           })
@@ -121,7 +126,7 @@ export default {
         let vm = this;
 
         return this.$axios
-          .get("http://192.168.0.102:8000/getHumidity")
+          .get(this.url + "/getHumidity")
           .then(res => {
             vm.humidity = res.data;
           })
@@ -135,9 +140,23 @@ export default {
         let vm = this;
 
         return this.$axios
-          .get("http://192.168.0.102:8000/getMotion")
+          .get(this.url + "/getMotion")
           .then(res => {
             vm.motion = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }, 4000);
+    },
+    getCO() {
+      this.pollingCO = setInterval(() => {
+        let vm = this;
+
+        return this.$axios
+          .get(this.url + "/getCO")
+          .then(res => {
+            vm.co = res.data;
           })
           .catch(err => {
             console.log(err);
