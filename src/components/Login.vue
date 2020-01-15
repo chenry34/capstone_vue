@@ -56,7 +56,8 @@ export default {
         password: vm.password
       };
       return this.$axios
-        .post("http://192.168.0.102:8000/api/token/", payload)
+        //.post("http://192.168.0.102:8000/api/token/", payload)
+        .post("http://localhost:8000/api/token/", payload)
         .then(res => {
           var tokenStorage = new TokenStorage(res.data.access, res.data.refresh)
           this.$store.commit('updateTokens', tokenStorage)

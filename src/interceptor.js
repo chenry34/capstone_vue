@@ -29,7 +29,7 @@ export default function interceptors() {
 
     if (tokenStorage) {
       // Logout user if token refresh didn't work or user is disabled
-      if (error.config.url == 'http://192.168.0.102:8000/api/token/refresh/' || error.response.message == 'Account is disabled.') {
+      if (error.config.url == 'http://localhost:8000/api/token/refresh/' || error.response.message == 'Account is disabled.') {
 
         tokenStorage.clear();
         router.push({ name: 'login' });
