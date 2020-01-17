@@ -1,16 +1,7 @@
 <template>
-  <div class="homepage">
+  <div class="homepage mt-5 ">
     <h1>Smart Home Monitoring System</h1>
-    <b-row class="mr-5 ml-5">
-
-      <!-- <b-col sm="4">
-        <b-card
-          title="Door"
-          class="card-style"
-        >
-          <b-card-text class="text-style">{{door}}</b-card-text>
-        </b-card>
-      </b-col> -->
+    <b-row class="mr-5 ml-5 mt-4">
       <b-col sm="4">
         <b-button
           title="Door"
@@ -24,18 +15,6 @@
           <b-modal title="Door" id="modal-1" hide-footer>Status: {{door}}</b-modal>
         </b-button>
       </b-col>
-
-
-
-      <!-- <b-col sm="4">
-        <b-card
-          class="card-style"
-          title="Window"
-        >
-          <b-card-text class="text-style">{{window}}</b-card-text>
-        </b-card>
-      </b-col> -->
-
       <b-col sm="4">
         <b-button
           title="Window"
@@ -49,17 +28,6 @@
           <b-modal title="Window" id="modal-2" hide-footer>Status: {{window}}</b-modal>
         </b-button>
       </b-col>
-
-
-      <!-- <b-col sm="4">
-        <b-card
-          class="card-style"
-          title="Humidity"
-        >
-          <b-card-text class="text-style">{{humidity}}%</b-card-text>
-        </b-card>
-      </b-col> -->
-
       <b-col sm="4">
         <b-button
           title="Humidity"
@@ -73,21 +41,8 @@
           <b-modal title="Humidity" id="modal-3" hide-footer>Status: {{humidity}}%</b-modal>
         </b-button>
       </b-col>
-
     </b-row>
     <b-row class="ml-5 mr-5">
-
-      <!-- <b-col sm="4">
-        <b-card
-          title="Temperature"
-          class="card-style"
-        >
-          <b-card-text>
-            <b-card-text class="text-style">{{temperature}} C</b-card-text>
-          </b-card-text>
-        </b-card>
-      </b-col> -->
-
       <b-col sm="4">
         <b-button
           title="Temperature"
@@ -97,20 +52,10 @@
           v-b-modal.modal-4
         >
         <p class="heading">Temperature</p>
-        <p class="status">{{humidity}}10 °C</p>
-          <b-modal title="Temperature" id="modal-4" hide-footer>Status: {{humidity}}10 °C</b-modal>
+        <p class="status">{{temperature}}°C</p>
+          <b-modal title="Temperature" id="modal-4" hide-footer>Status: {{temperature}}°C</b-modal>
         </b-button>
       </b-col>
-
-
-      <!-- <b-col sm="4">
-        <b-card
-          class="card-style"
-          title="Carbon Monoxide"
-        >
-          <b-card-text class="text-style">{{co}} ppm</b-card-text>
-        </b-card>
-      </b-col> -->
       <b-col sm="4">
         <b-button
           title="Carbon Monoxide"
@@ -124,17 +69,6 @@
           <b-modal title="Carbon Monoxide" id="modal-5" hide-footer>Status: {{humidity}}ppm</b-modal>
         </b-button>
       </b-col>
-
-
-      <!-- <b-col sm="4">
-        <b-card
-          class="card-style"
-          title="Motion"
-        >
-          <b-card-text class="text-style">{{motion}}</b-card-text>
-        </b-card>
-      </b-col> -->
-
       <b-col sm="4">
         <b-button
           title="Motion"
