@@ -47,6 +47,7 @@ export default {
       password: "",
       loginFailed: false,
       url: "http://localhost:8000"
+      
     };
   },
   methods: {
