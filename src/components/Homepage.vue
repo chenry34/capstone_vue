@@ -81,12 +81,12 @@
           v-b-modal.modal-5
         >
           <p class="heading">Carbon Monoxide</p>
-          <p class="status">{{humidity}}ppm</p>
+          <p class="status">{{co}}ppm</p>
           <b-modal
             title="Carbon Monoxide"
             id="modal-5"
             hide-footer
-          >Status: {{humidity}}ppm</b-modal>
+          >Status: {{co}}ppm</b-modal>
         </b-button>
       </b-col>
       <b-col sm="4">
