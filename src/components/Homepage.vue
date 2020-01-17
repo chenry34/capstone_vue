@@ -33,7 +33,7 @@
           class="card-style"
         >
           <b-card-text>
-            <b-card-text class="text-style">10 C</b-card-text>
+            <b-card-text class="text-style">{{temperature}} C</b-card-text>
           </b-card-text>
         </b-card>
       </b-col>
@@ -42,7 +42,7 @@
           class="card-style"
           title="Carbon Monoxide"
         >
-          <b-card-text class="text-style">{{co}}</b-card-text>
+          <b-card-text class="text-style">{{co}} ppm</b-card-text>
         </b-card>
       </b-col>
       <b-col sm="4">
@@ -67,16 +67,21 @@ export default {
       humidity: "",
       motion: "",
       co: "",
+      temperature: "",
       pollingDoor: null,
       pollingWindow: null,
       pollingHumidity: null,
       pollingMotion: null,
       pollingCO: null,
-      url: "http://192.168.0.102:8000"
+      pollingTemperature: null,
+      url: "http://localhost:8000"
     };
   },
   created: function() {
-    if (!this.$store.getters.getTokens || !this.$store.getters.getTokens.isAuthenticated()) {
+    if (
+      !this.$store.getters.getTokens ||
+      !this.$store.getters.getTokens.isAuthenticated()
+    ) {
       this.$router.push("/");
     }
     this.getDoor();
@@ -84,6 +89,7 @@ export default {
     this.getHumidity();
     this.getMotion();
     this.getCO();
+    this.getTemperature();
   },
   beforeDestroy() {
     clearInterval(this.pollingDoor);
@@ -91,6 +97,7 @@ export default {
     clearInterval(this.pollingHumidity);
     clearInterval(this.pollingMotion);
     clearInterval(this.pollingCO);
+    clearInterval(this.pollingTemperature);
   },
   methods: {
     getDoor() {
@@ -142,7 +149,11 @@ export default {
         return this.$axios
           .get(this.url + "/getMotion")
           .then(res => {
-            vm.motion = res.data;
+            if (res.data == 0) {
+              vm.motion = "No motion detected"
+            } else {
+              vm.motion = "Motion Detected"
+            }
           })
           .catch(err => {
             console.log(err);
@@ -157,6 +168,20 @@ export default {
           .get(this.url + "/getCO")
           .then(res => {
             vm.co = res.data;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }, 4000);
+    },
+    getTemperature() {
+      this.pollingTemperature = setInterval(() => {
+        let vm = this;
+
+        return this.$axios
+          .get(this.url + "/getTemperature")
+          .then(res => {
+            vm.temperature = res.data;
           })
           .catch(err => {
             console.log(err);
