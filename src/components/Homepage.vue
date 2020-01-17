@@ -1,7 +1,7 @@
 <template>
   <div class="homepage mt-5 ">
     <h1>Smart Home Monitoring System</h1>
-    <b-row class="mr-5 ml-5 mt-4">
+    <b-row class="mr-2 ml-2 mt-4">
       <b-col sm="4">
         <b-button
           title="Door"
@@ -54,7 +54,7 @@
         </b-button>
       </b-col>
     </b-row>
-    <b-row class="ml-5 mr-5">
+    <b-row class="ml-2 mr-2">
       <b-col sm="4">
         <b-button
           title="Temperature"
@@ -107,7 +107,7 @@
         </b-button>
       </b-col>
     </b-row>
-    <b-row class="ml-5 mr-5">
+    <b-row class="ml-2 mr-2">
       <b-col sm="4">
         <b-button
           title="Motion"
