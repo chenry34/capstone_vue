@@ -129,6 +129,7 @@ export default {
       window: "",
       humidity: "",
       motion: "",
+      motionList: "",
       co: "",
       temperature: "",
       light: "",
@@ -209,11 +210,12 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getMotion").then(res => {
-          if (res.data == 0) {
+          if (res.data[res.data.length-1].value == 0) {
             vm.motion = "No motion detected";
           } else {
             vm.motion = "Motion Detected";
           }
+          vm.motionList = res.data
         }).catch(err => {
           console.log(err);
         });
