@@ -102,14 +102,15 @@
           class="button mt-3"
           size="lg"
           variant="primary"
-          v-b-modal.modal-6
+          v-b-modal.modal-7
         >
           <p class="heading">Light</p>
           <p class="status">
-            {{ light }}
+            {{ lightDisplay }}
           </p>
-          <b-modal title="Motion" id="modal-6" hide-footer>
-            Status: {{ light }}
+          <b-modal title="Light" id="modal-7" hide-footer>
+            <b-form-checkbox v-model="light" switch name="check-button">         
+            </b-form-checkbox>
           </b-modal>
         </b-button>
       </b-col>
@@ -129,6 +130,7 @@ export default {
       co: "",
       temperature: "",
       light: "",
+      lightDisplay: "",
       pollingDoor: null,
       pollingWindow: null,
       pollingHumidity: null,
@@ -159,6 +161,11 @@ export default {
     clearInterval(this.pollingCO);
     clearInterval(this.pollingTemperature);
     clearInterval(this.pollingLight);
+  },
+  watch: {
+    light: function() {
+      this.setLight()
+    }
   },
   methods: {
     getDoor() {
@@ -236,11 +243,28 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getLight").then(res => {
-          vm.light = res.data;
+          if (res.data == '0' || res.data == 0) {
+            vm.light = false;
+            vm.lightDisplay = "Off";
+          }
+          else {
+            vm.light = true;
+            vm.lightDisplay = "On";
+          }
         }).catch(err => {
           console.log(err);
         });
       }, 2000);
+    },
+    setLight() {
+      let vm = this
+      clearInterval(this.pollingLight); // Stop polling the light during the request
+      
+      return this.$axios.post(this.url + "/setLight?light=" + vm.light).then(() => {
+        this.getLight() // Start polling again
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 };
