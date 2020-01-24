@@ -96,6 +96,7 @@
       </b-col>
     </b-row>
     <b-row class="ml-2 mr-2">
+      <b-col sm="4"></b-col>
       <b-col sm="4">
         <b-button
           title="Motion"
@@ -109,7 +110,8 @@
             {{ lightDisplay }}
           </p>
           <b-modal title="Light" id="modal-7" hide-footer>
-            <b-form-checkbox v-model="light" switch name="check-button">         
+            Current Status:
+            <b-form-checkbox class="mt-2" v-model="light" switch name="check-button">         
             </b-form-checkbox>
           </b-modal>
         </b-button>
