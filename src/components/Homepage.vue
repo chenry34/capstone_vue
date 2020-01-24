@@ -111,7 +111,12 @@
           </p>
           <b-modal title="Light" id="modal-7" hide-footer>
             Current Status:
-            <b-form-checkbox class="mt-2" v-model="light" switch name="check-button">         
+            <b-form-checkbox
+              class="mt-2"
+              v-model="light"
+              switch
+              name="check-button"
+            >
             </b-form-checkbox>
           </b-modal>
         </b-button>
@@ -166,7 +171,7 @@ export default {
     clearInterval(this.pollingLight);
   },
   watch: {
-    light: function() {
+    light: function () {
       this.setLight()
     }
   },
@@ -176,7 +181,10 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getDoor").then(res => {
-          vm.door = res.data;
+          if (res.data[res.data.length - 1].value == '0' || res.data[res.data.length - 1].value == 0)
+            vm.door = "Closed";
+          else
+            vm.door = "Open"
         }).catch(err => {
           console.log(err);
         });
@@ -187,7 +195,10 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getWindow").then(res => {
-          vm.window = res.data;
+          if (res.data[res.data.length - 1].value == '0' || res.data[res.data.length - 1].value == 0)
+            vm.window = "Closed";
+          else
+            vm.window = "Open"
         }).catch(err => {
           console.log(err);
         });
@@ -198,7 +209,7 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getHumidity").then(res => {
-          vm.humidity = res.data;
+          vm.humidity = res.data[res.data.length - 1].value;
         }).catch(err => {
           console.log(err);
         });
@@ -209,7 +220,7 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getMotion").then(res => {
-          if (res.data[res.data.length-1].value == 0) {
+          if (res.data[res.data.length - 1].value == 0) {
             vm.motion = "No motion detected";
           } else {
             vm.motion = "Motion Detected";
@@ -225,7 +236,7 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getCO").then(res => {
-          vm.co = res.data;
+          vm.co = res.data[res.data.length - 1].value;
         }).catch(err => {
           console.log(err);
         });
@@ -236,7 +247,7 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getTemperature").then(res => {
-          vm.temperature = res.data;
+          vm.temperature = res.data[res.data.length - 1].value;
         }).catch(err => {
           console.log(err);
         });
@@ -247,7 +258,8 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getLight").then(res => {
-          if (res.data == '0' || res.data == 0) {
+
+          if (res.data[res.data.length - 1].value == '0' || res.data[res.data.length - 1].value == 0) {
             vm.light = false;
             vm.lightDisplay = "Off";
           }
@@ -263,7 +275,7 @@ export default {
     setLight() {
       let vm = this
       clearInterval(this.pollingLight); // Stop polling the light during the request
-      
+
       return this.$axios.post(this.url + "/setLight?light=" + vm.light).then(() => {
         this.getLight() // Start polling again
       }).catch(err => {
