@@ -90,9 +90,8 @@
           <p class="heading">Motion</p>
           <p class="status">{{ motion }}</p>
           <b-modal title="Motion" id="modal-6" hide-footer>
-            Status: {{ motionList }}
-            <br />
-            Time: {{motionTime}}
+            <strong>Current Status:</strong> {{ motion }}
+            <br>
             <LineChart :data="motionList" :x_axis="motionTime">
             </LineChart>
           </b-modal>
@@ -242,7 +241,7 @@ export default {
           var i;
           for (i = 0; i < res.data.length; i++) {
             vm.motionList.push(res.data[i].value);
-            vm.motionTime.push(moment(res.data[i].time_stamp).format('YYY-MM-DD, h:mm:ss'));
+            vm.motionTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
