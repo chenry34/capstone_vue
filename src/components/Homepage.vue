@@ -93,6 +93,8 @@
             Status: {{ motionList }}
             <br />
             Time: {{motionTime}}
+            <LineChart :data="motionList" :x_axis="motionTime">
+            </LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -120,8 +122,6 @@
               name="check-button"
             >
             </b-form-checkbox>
-            <LineChart :data="motionList" :x_axis="motionTime">
-            </LineChart>
           </b-modal>
         </b-button>
       </b-col>
