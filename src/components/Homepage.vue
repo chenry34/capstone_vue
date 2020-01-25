@@ -90,7 +90,9 @@
           <p class="heading">Motion</p>
           <p class="status">{{ motion }}</p>
           <b-modal title="Motion" id="modal-6" hide-footer>
-            Status: {{ motion }}
+            Status: {{ motionList }}
+            <br />
+            Time: {{motionTime}}
           </b-modal>
         </b-button>
       </b-col>
@@ -118,6 +120,8 @@
               name="check-button"
             >
             </b-form-checkbox>
+            <LineChart :data="motionList" :x_axis="motionTime">
+            </LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -126,15 +130,22 @@
 </template>
 
 <script>
+import moment from 'moment';
+import LineChart from './LineChart';
+
 export default {
   name: "homepage",
+  components: {
+    LineChart
+  },
   data: function () {
     return {
       door: "",
       window: "",
       humidity: "",
       motion: "",
-      motionList: "",
+      motionList: [],
+      motionTime: [],
       co: "",
       temperature: "",
       light: "",
@@ -146,7 +157,8 @@ export default {
       pollingCO: null,
       pollingTemperature: null,
       pollingLight: null,
-      url: "http://192.168.0.102:8000"
+      // url: "http://192.168.0.102:8000"
+      url: "http://localhost:8000"
     };
   },
   created: function () {
@@ -220,12 +232,18 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getMotion").then(res => {
-          if (res.data[res.data.length - 1].value == 0) {
+          vm.motionList = [];
+          vm.motionTime = [];
+          if (res.data[res.data.length-1].value == 0) {
             vm.motion = "No motion detected";
           } else {
             vm.motion = "Motion Detected";
           }
-          vm.motionList = res.data
+          var i;
+          for (i = 0; i < res.data.length; i++) {
+            vm.motionList.push(res.data[i].value);
+            vm.motionTime.push(moment(res.data[i].time_stamp).format('YYY-MM-DD, h:mm:ss'));
+          }
         }).catch(err => {
           console.log(err);
         });
