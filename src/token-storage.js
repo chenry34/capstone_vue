@@ -22,7 +22,7 @@ export default class TokenStorage {
 
   getNewToken() {
     return new Promise((resolve, reject) => {
-      axios.post("http://localhost:8000/api/token/refresh/", { refresh: localStorage.getItem("refresh")})
+      axios.post("http://192.168.0.102:8000/api/token/refresh/", { refresh: localStorage.getItem("refresh")})
         .then(response => {
           this.storeToken(response.data.access);
           resolve(response.data.access);
