@@ -11,9 +11,25 @@ export default {
     x_axis: {
       type: Array,
       required: false
+    },
+    y_axis_label: {
+      type: String,
+      required: false
     }
   },
   mounted() {
+    this.renderLineChart();
+  },
+
+  computed: {
+    chartData: function()
+    {
+      return this.data;
+    }  
+  },
+
+  methods: {
+    renderLineChart: function(){
     this.renderChart(
       {
         labels: this.x_axis,
@@ -30,6 +46,9 @@ export default {
       {
         responsive: false,
         maintainAspectRatio: false,
+        animation: {
+          duration: 0
+        },
         title: {
           display: true,
           text: "Motion Data for Past 24 Hours"
@@ -38,7 +57,7 @@ export default {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Motion Detected'
+              labelString: this.y_axis_label
             },
             ticks: {
               beginAtZero: true,
@@ -78,5 +97,13 @@ export default {
       }
     );
   }
+  },
+
+  watch: {
+    data: function(){
+      this.renderLineChart();
+    }
+  }
+
 };
 </script>

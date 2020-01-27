@@ -14,6 +14,9 @@
           <p class="status">{{ door }}</p>
           <b-modal title="Door" id="modal-1" hide-footer>
             Status: {{ door }}
+            <strong>Current Status:</strong> {{ door }}
+            <br>
+            <LineChart y_axis_label="Door Status" :data="doorList" :x_axis="doorTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -28,7 +31,9 @@
           <p class="heading">Window</p>
           <p class="status">{{ window }}</p>
           <b-modal title="Window" id="modal-2" hide-footer>
-            Status: {{ window }}
+            <strong>Current Status:</strong> {{ window }}
+            <br>
+            <LineChart y_axis_label="Window Status" :data="windowList" :x_axis="windowTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -43,7 +48,9 @@
           <p class="heading">Humidity</p>
           <p class="status">{{ humidity }}%</p>
           <b-modal title="Humidity" id="modal-3" hide-footer>
-            Status: {{ humidity }}%
+            <strong>Current Status:</strong> {{ humidity }} %
+            <br>
+            <LineChart y_axis_label="Humidity (%)" :data="humidityList" :x_axis="humidityTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -60,7 +67,9 @@
           <p class="heading">Temperature</p>
           <p class="status">{{ temperature }}°C</p>
           <b-modal title="Temperature" id="modal-4" hide-footer>
-            Status: {{ temperature }}°C
+            <strong>Current Status:</strong> {{ temperature }} °C
+            <br>
+            <LineChart y_axis_label="Temperature (°C)" :data="tempList" :x_axis="tempTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -75,7 +84,9 @@
           <p class="heading">Carbon Monoxide</p>
           <p class="status">{{ co }}ppm</p>
           <b-modal title="Carbon Monoxide" id="modal-5" hide-footer>
-            Status: {{ co }}ppm
+            <strong>Current Status:</strong> {{ co }} ppm
+            <br>
+            <LineChart y_axis_label="CO (ppm)" :data="coList" :x_axis="coTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -92,8 +103,7 @@
           <b-modal title="Motion" id="modal-6" hide-footer>
             <strong>Current Status:</strong> {{ motion }}
             <br>
-            <LineChart :data="motionList" :x_axis="motionTime">
-            </LineChart>
+            <LineChart y_axis_label="Motion Detected" :data="motionList" :x_axis="motionTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -120,6 +130,8 @@
               switch
               name="check-button"
             >
+            <br>
+            <LineChart y_axis_label="Light Status" :data="lightList" :x_axis="lightTime" ></LineChart>
             </b-form-checkbox>
           </b-modal>
         </b-button>
@@ -145,6 +157,18 @@ export default {
       motion: "",
       motionList: [],
       motionTime: [],
+      tempList: [],
+      tempTime: [],
+      humidityList: [],
+      humidityTime: [],
+      coList: [],
+      coTime: [],
+      windowList: [],
+      windowTime: [],
+      doorList: [],
+      doorTime: [],
+      lightList: [],
+      lightTime: [],
       co: "",
       temperature: "",
       light: "",
@@ -192,10 +216,20 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getDoor").then(res => {
-          if (res.data[res.data.length - 1].value == '0' || res.data[res.data.length - 1].value == 0)
+          vm.doorList = [];
+          vm.doorTime = [];
+
+          if (res.data[res.data.length - 1].value == '0' || res.data[res.data.length - 1].value == 0){
             vm.door = "Closed";
-          else
+          }
+          else{
             vm.door = "Open"
+          }
+          var i;
+          for (i = 0; i < res.data.length; i++) {
+            vm.doorList.push(res.data[i].value);
+            vm.doorTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+          }
         }).catch(err => {
           console.log(err);
         });
@@ -206,10 +240,20 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getWindow").then(res => {
-          if (res.data[res.data.length - 1].value == '0' || res.data[res.data.length - 1].value == 0)
+          vm.windowList = [];
+          vm.windowTime = [];
+
+          if (res.data[res.data.length - 1].value == '0' || res.data[res.data.length - 1].value == 0){
             vm.window = "Closed";
-          else
-            vm.window = "Open"
+          }
+          else{
+            vm.window = "Open";
+          }
+          var i;
+          for (i = 0; i < res.data.length; i++) {
+            vm.windowList.push(res.data[i].value);
+            vm.windowTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+          }
         }).catch(err => {
           console.log(err);
         });
@@ -220,7 +264,16 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getHumidity").then(res => {
+          vm.humidityList = [];
+          vm.humidityTime = [];
+
           vm.humidity = res.data[res.data.length - 1].value;
+
+          var i;
+          for (i = 0; i < res.data.length; i++) {
+            vm.humidityList.push(res.data[i].value);
+            vm.humidityTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+          }
         }).catch(err => {
           console.log(err);
         });
@@ -253,7 +306,15 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getCO").then(res => {
+          vm.coList = [];
+          vm.coTime =[];
           vm.co = res.data[res.data.length - 1].value;
+
+          var i;
+          for (i = 0; i < res.data.length; i++) {
+            vm.coList.push(res.data[i].value);
+            vm.coTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+          }
         }).catch(err => {
           console.log(err);
         });
@@ -264,7 +325,16 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getTemperature").then(res => {
+          vm.tempList = [];
+          vm.tempTime = [];
+          
           vm.temperature = res.data[res.data.length - 1].value;
+
+          var i;
+          for (i = 0; i < res.data.length; i++) {
+            vm.tempList.push(res.data[i].value);
+            vm.tempTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+          }
         }).catch(err => {
           console.log(err);
         });
@@ -275,6 +345,8 @@ export default {
         let vm = this;
 
         return this.$axios.get(this.url + "/getLight").then(res => {
+          vm.lightList = [];
+          vm.lightTime = [];
 
           if (res.data[res.data.length - 1].value == '0' || res.data[res.data.length - 1].value == 0) {
             vm.light = false;
@@ -283,6 +355,12 @@ export default {
           else {
             vm.light = true;
             vm.lightDisplay = "On";
+          }
+
+          var i;
+          for (i = 0; i < res.data.length; i++) {
+            vm.lightList.push(res.data[i].value);
+            vm.lightTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
