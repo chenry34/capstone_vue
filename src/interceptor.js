@@ -17,7 +17,6 @@ export default function interceptors() {
     // Return a successful response back to the calling service
     return response;
   }, (error) => {
-    console.log(error.response)
     // Return any error which is not due to authentication back to the calling service
     if (error.response.status != 401) {
       return new Promise((resolve, reject) => {
