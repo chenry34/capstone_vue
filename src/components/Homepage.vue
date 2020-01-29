@@ -181,6 +181,7 @@ export default {
       pollingTemperature: null,
       pollingLight: null,
       url: "http://192.168.0.102:8000"
+      // url: "http://localhost:8000"
     };
   },
   created: function () {
