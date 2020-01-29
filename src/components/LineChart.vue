@@ -15,6 +15,14 @@ export default {
     y_axis_label: {
       type: String,
       required: false
+    },
+    scaleType: {
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
     }
   },
   mounted() {
@@ -22,85 +30,103 @@ export default {
   },
 
   computed: {
-    chartData: function()
-    {
+    chartData: function () {
       return this.data;
-    }  
+    }
   },
 
   methods: {
-    renderLineChart: function(){
-    this.renderChart(
-      {
-        labels: this.x_axis,
-        datasets: [
-          {
-            data: this.data,
-            backgroundColor: "transparent",
-            borderColor: "rgba(1, 116, 188, 0.50)",
-            pointBackgroundColor: "rgba(171, 71, 188, 1)",
-            steppedLine: true,
-          }
-        ]
-      },
-      {
-        responsive: false,
-        maintainAspectRatio: false,
-        animation: {
-          duration: 0
+    renderLineChart: function () {
+      let vm = this
+      this.renderChart(
+        {
+          labels: this.x_axis,
+          datasets: [
+            {
+              data: this.data,
+              backgroundColor: "transparent",
+              borderColor: "rgba(1, 116, 188, 0.50)",
+              pointBackgroundColor: "rgba(171, 71, 188, 1)",
+              steppedLine: true,
+            }
+          ]
         },
-        title: {
-          display: true,
-          text: "Motion Data for Past 24 Hours"
-        },
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: this.y_axis_label
-            },
-            ticks: {
-              beginAtZero: true,
-              callback: function (value) {
-                if (Number.isInteger(value)) {
-                  if (value == 0)
-                    return "No"
-                  else if (value == 1)
-                    return "Yes"
-                }
+        {
+          responsive: false,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 0
+          },
+          title: {
+            display: true,
+            text: this.title
+          },
+          scales: {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: this.y_axis_label
               },
-              stepSize: 1
-            }
-          }],
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Time'
-            }, 
-            type: "time",
-            distribution: 'linear',
-            ticks: {
-              source: 'auto'
-            }
-          }]
-        },
-        legend: {
-          display: false
-        },
-        tooltips: {
-          callbacks: {
-            label: function (tooltipItem) {
-              return tooltipItem.yLabel;
+              ticks: {
+                beginAtZero: true,
+                callback: function (value) {
+                  if (vm.scaleType == "0") {
+                    if (Number.isInteger(value)) {
+                      if (value == 0)
+                        return "Closed"
+                      else if (value == 1)
+                        return "Open"
+                    }
+                  } else if (vm.scaleType == "1") {
+                    if (Number.isInteger(value)) {
+                      if (value == 0)
+                        return "No"
+                      else if (value == 1)
+                        return "Yes"
+                    }
+                  } else if (vm.scaleType == "4"){
+                    if (Number.isInteger(value)) {
+                      if (value == 0)
+                        return "Off"
+                      else if (value == 1)
+                        return "On"
+                    }
+                  } else {
+                    return value
+                  }
+                },
+                stepSize: 1
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Time'
+              },
+              type: "time",
+              distribution: 'linear',
+              ticks: {
+                source: 'auto'
+              }
+            }]
+          },
+          legend: {
+            display: false
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem) {
+                return tooltipItem.yLabel;
+              }
             }
           }
         }
-      }
-    );
-  }
+      );
+    }
   },
 
   watch: {
-    data: function(){
+    data: function () {
       this.renderLineChart();
     }
   }

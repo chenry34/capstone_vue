@@ -16,7 +16,7 @@
             Status: {{ door }}
             <strong>Current Status:</strong> {{ door }}
             <br>
-            <LineChart y_axis_label="Door Status" :data="doorList" :x_axis="doorTime" ></LineChart>
+            <LineChart title="Door Data for Past 24 Hours" scaleType="0" y_axis_label="Door Status" :data="doorList" :x_axis="doorTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -33,7 +33,7 @@
           <b-modal title="Window" id="modal-2" hide-footer>
             <strong>Current Status:</strong> {{ window }}
             <br>
-            <LineChart y_axis_label="Window Status" :data="windowList" :x_axis="windowTime" ></LineChart>
+            <LineChart title="Window Data for Past 24 Hours" scaleType="0" y_axis_label="Window Status" :data="windowList" :x_axis="windowTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -50,7 +50,7 @@
           <b-modal title="Humidity" id="modal-3" hide-footer>
             <strong>Current Status:</strong> {{ humidity }} %
             <br>
-            <LineChart y_axis_label="Humidity (%)" :data="humidityList" :x_axis="humidityTime" ></LineChart>
+            <LineChart title="Humidity Data for Past 24 Hours" scaleType="2" y_axis_label="Humidity (%)" :data="humidityList" :x_axis="humidityTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -69,7 +69,7 @@
           <b-modal title="Temperature" id="modal-4" hide-footer>
             <strong>Current Status:</strong> {{ temperature }} °C
             <br>
-            <LineChart y_axis_label="Temperature (°C)" :data="tempList" :x_axis="tempTime" ></LineChart>
+            <LineChart title="Temperature Data for Past 24 Hours" scaleType="2" y_axis_label="Temperature (°C)" :data="tempList" :x_axis="tempTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -86,7 +86,7 @@
           <b-modal title="Carbon Monoxide" id="modal-5" hide-footer>
             <strong>Current Status:</strong> {{ co }} ppm
             <br>
-            <LineChart y_axis_label="CO (ppm)" :data="coList" :x_axis="coTime" ></LineChart>
+            <LineChart title="Carbon Monoxide Data for Past 24 Hours" scaleType="2" y_axis_label="CO (ppm)" :data="coList" :x_axis="coTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -103,7 +103,7 @@
           <b-modal title="Motion" id="modal-6" hide-footer>
             <strong>Current Status:</strong> {{ motion }}
             <br>
-            <LineChart y_axis_label="Motion Detected" :data="motionList" :x_axis="motionTime" ></LineChart>
+            <LineChart title="Motion Data for Past 24 Hours" scaleType="1" y_axis_label="Motion Detected" :data="motionList" :x_axis="motionTime" ></LineChart>
           </b-modal>
         </b-button>
       </b-col>
@@ -131,7 +131,7 @@
               name="check-button"
             >
             <br>
-            <LineChart y_axis_label="Light Status" :data="lightList" :x_axis="lightTime" ></LineChart>
+            <LineChart title="Light Data for Past 24 Hours" scaleType="4" y_axis_label="Light Status" :data="lightList" :x_axis="lightTime" ></LineChart>
             </b-form-checkbox>
           </b-modal>
         </b-button>
