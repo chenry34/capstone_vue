@@ -227,7 +227,7 @@ export default {
           var i;
           for (i = 0; i < res.data.length; i++) {
             vm.doorList.push(res.data[i].value);
-            vm.doorTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+            vm.doorTime.push(moment(res.data[i].time_stamp).utc().format('MM-DD, H:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
@@ -251,7 +251,7 @@ export default {
           var i;
           for (i = 0; i < res.data.length; i++) {
             vm.windowList.push(res.data[i].value);
-            vm.windowTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+            vm.windowTime.push(moment(res.data[i].time_stamp).utc().format('MM-DD, H:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
@@ -271,7 +271,7 @@ export default {
           var i;
           for (i = 0; i < res.data.length; i++) {
             vm.humidityList.push(res.data[i].value);
-            vm.humidityTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+            vm.humidityTime.push(moment(res.data[i].time_stamp).utc().format('MM-DD, H:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
@@ -293,7 +293,7 @@ export default {
           var i;
           for (i = 0; i < res.data.length; i++) {
             vm.motionList.push(res.data[i].value);
-            vm.motionTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+            vm.motionTime.push(moment(res.data[i].time_stamp).utc().format('MM-DD, H:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
@@ -312,7 +312,7 @@ export default {
           var i;
           for (i = 0; i < res.data.length; i++) {
             vm.coList.push(res.data[i].value);
-            vm.coTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+            vm.coTime.push(moment(res.data[i].time_stamp).utc().format('MM-DD, H:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
@@ -332,7 +332,7 @@ export default {
           var i;
           for (i = 0; i < res.data.length; i++) {
             vm.tempList.push(res.data[i].value);
-            vm.tempTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+            vm.tempTime.push(moment(res.data[i].time_stamp).utc().format('MM-DD, H:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
@@ -359,7 +359,7 @@ export default {
           var i;
           for (i = 0; i < res.data.length; i++) {
             vm.lightList.push(res.data[i].value);
-            vm.lightTime.push(moment(res.data[i].time_stamp).format('MM-DD, h:mm:ss'));
+            vm.lightTime.push(moment(res.data[i].time_stamp).utc().format('MM-DD, H:mm:ss'));
           }
         }).catch(err => {
           console.log(err);
