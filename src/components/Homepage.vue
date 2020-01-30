@@ -276,7 +276,7 @@ export default {
         }).catch(err => {
           console.log(err);
         });
-      }, 2000);
+      }, 10000);
     },
     getMotion() {
       this.pollingMotion = setInterval(() => {
@@ -317,7 +317,7 @@ export default {
         }).catch(err => {
           console.log(err);
         });
-      }, 2000);
+      }, 10000);
     },
     getTemperature() {
       this.pollingTemperature = setInterval(() => {
@@ -337,7 +337,7 @@ export default {
         }).catch(err => {
           console.log(err);
         });
-      }, 2000);
+      }, 10000);
     },
     getLight() {
       this.pollingLight = setInterval(() => {
